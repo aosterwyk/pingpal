@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pingpal</title>
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="../node_modules/@fortawesome/fontawesome-free/js/brands.js"></script>
+    <script defer src="../node_modules/@fortawesome/fontawesome-free/js/solid.js"></script>
+    <script defer src="../node_modules/@fortawesome/fontawesome-free/js/fontawesome.js"></script>    
+</head>
+<body>
+  <div class="col-lg-8 mx-auto p-3 py-md-5">
+    <main>
+      Kifflom!
+      <button class="btn-sm btn-info" onclick="addPings()">Add ping</button>
+
+      <div class="input-group my-3">
+        <input type="text" class="form-control" placeholder="IP or hostname">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" type="button" onclick="startPings()">Start</button>
+        </div>
+      </div>      
+      <canvas class="my-4 w-100" id="pingChart" width="900" height="380"></canvas>
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between px-md-1">
+                <div class="align-self-center">
+                  <i class="fas fa-network-wired text-info fa-3x"></i>
+                </div>
+                <div class="text-end">
+                  <h3 id="pingCount">0</h3>
+                  <p class="mb-0">Pings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between px-md-1">
+                <div class="align-self-center">
+                  <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                </div>
+                <div class="text-end">
+                  <h3 id="pingFailures">0</h3>
+                  <p class="mb-0">Failures</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </main>
+    <footer class="pt-2 my-5 text-muted">
+      Pingpal VERSION<br>
+      <a href="https://github.com/aosterwyk/pingpal" target="_blank" rel="noopener"><i class="fab fa-github text-muted"></i></a>
+    </footer>
+  </div>
+  <script src="../node_modules/chart.js/dist/chart.min.js"></script>  
+  <script src="pingGraph.js"></script>
+</body>
+</html>
