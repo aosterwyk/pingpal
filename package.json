@@ -23,7 +23,8 @@
     "productName": "Pingpal",
     "win": {
       "target": [
-        "portable"
+        "portable",
+        "nsis"
       ]
     }
   }
