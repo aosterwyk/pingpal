@@ -1,6 +1,5 @@
 function startPings() {
     let pingMe = document.getElementById('pingMe').value;
-    // console.log(pingMe);
     window.pingpal.startPings(pingMe);    
 }
 
@@ -25,18 +24,9 @@ function updateStatus(msgType, msg) {
     if(msgType == 'error') {        
         msgColor = `text-danger`;
     }
-    else if(msgType == 'warning') {
-        msgColor = `text-warning`;
-    }
-    else if(msgType == 'success') {
-        msgColor = `text-success`;
-    }
     else if(msgType == 'info') {
         msgColor = `text-muted`;
     }    
-    else if(msgType == 'special') {
-        msgColor = `text-info`;
-    }
     else {
         msgColor = `text-muted`;
     }
@@ -45,8 +35,13 @@ function updateStatus(msgType, msg) {
     statusBox.scrollTop = statusBox.scrollHeight;
     
     let logToFileSetting = document.getElementById('logToFileCheck'); 
-    if(logToFileSetting.checked) {
-        window.pingpal.writeToLog(msg);
+    if(logToFileSetting.checked && msgType != 'noLog') {
+        let pingThis = document.getElementById('pingMe').value;        
+        let logData = {
+            host: pingThis,
+            msg: msg
+        };
+        window.pingpal.writeToLog(logData);
     }
 }
 
