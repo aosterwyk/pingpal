@@ -4,7 +4,6 @@ const ctx = document.getElementById('pingChart');
 const pingChart = new Chart(ctx, {
     type: 'line',
     data: {
-        // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         labels: [''],
         datasets: [{
             label: 'ms',
@@ -44,12 +43,21 @@ function removeData(chart) {
     chart.update();
 }
 
-function addPings() {
-    let newPingValue = Math.floor((Math.random() * 100) + 1);
+function addPings(alive, newPingValue) {
+    // let newPingValue = Math.floor((Math.random() * 100) + 1);
     pingCount += 1;
+    if(pingCount > 50) { // remove old data older than 50
+        pingChart.data.labels.shift();
+        pingChart.data.datasets.forEach((dataset) => {
+            dataset.data.shift();
+        });
+        pingChart.update();
+    }
     document.getElementById('pingCount').innerText = pingCount;
-    // log to status window
-    // update fail count if ping failed
+    if(!alive) {
+        let pingFails = document.getElementById('pingFailures');
+        pingFails.innerText = Number(pingFails.innerText) + 1;
+    }    
     // get timestamp and add it to label
     addData(pingChart, '', newPingValue);
 }

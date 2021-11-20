@@ -11,18 +11,20 @@
 <body>
   <div class="col-lg-8 mx-auto p-3 py-md-5">
     <main>
-      Kifflom!
-      <button class="btn-sm btn-info" onclick="addPings()">Add ping</button>
+      <!-- Kifflom!
+      <button class="btn-sm btn-info" onclick="addPings()">Add ping</button> -->
 
-      <div class="input-group my-3">
-        <input type="text" class="form-control" placeholder="IP or hostname">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="IP or hostname" id="pingMe">
         <div class="input-group-append">
-          <button class="btn btn-outline-primary" type="button" onclick="startPings()">Start</button>
+          <button class="btn btn-outline-primary" type="button" onclick="startPings()" id="startButton">Start</button>
+          <button class="btn btn-outline-danger" type="button" onclick="stopPings()" id="stopButton">Stop</button>
         </div>
       </div>      
       <canvas class="my-4 w-100" id="pingChart" width="900" height="380"></canvas>
       <div class="row">
-        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <!-- <div class="col-xl-3 col-sm-6 col-12 mb-4"> -->
+          <div class="w-50 mb-4">
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between px-md-1">
@@ -37,7 +39,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12 mb-4">
+        <!-- <div class="col-xl-3 col-sm-6 col-12 mb-4"> -->
+        <div class="w-50 mb-4">
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between px-md-1">
@@ -52,14 +55,46 @@
             </div>
           </div>
         </div>
-      </div>      
+      </div> 
+      <div class="row">
+        <div class="col-sm">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="logToFileCheck" checked>
+            <label class="form-check-label" for="logToFileCheck">
+              Log to file
+            </label>
+          </div>
+        </div>          
+        <div class="col-sm">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="soundOnFail" checked>
+            <label class="form-check-label" for="soundOnFail">
+              Play sound on failure
+            </label>
+          </div>
+        </div>                  
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="This doesn't work yet" id="logFilepath" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button">Browse</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card"> 
+        <div class="card-body" style="height:125px; overflow:auto;" id="statusBox"></div>
+      </div>
     </main>
     <footer class="pt-2 my-5 text-muted">
-      Pingpal VERSION<br>
-      <a href="https://github.com/aosterwyk/pingpal" target="_blank" rel="noopener"><i class="fab fa-github text-muted"></i></a>
+      <small>Pingpal <span id="versionNumber"></span></small><br>
+      <a href="#"><i class="fab fa-github text-muted" onclick="externalPage('github')"></i></a>
     </footer>
   </div>
   <script src="../node_modules/chart.js/dist/chart.min.js"></script>  
-  <script src="pingGraph.js"></script>
+  <script src="./pingGraph.js"></script>
+  <script src="./pingpalUI.js"></script>
 </body>
 </html>
