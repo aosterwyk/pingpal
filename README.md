@@ -22,4 +22,4 @@ Pingpal pings a host and alerts if it goes down. Don't shoot the messenger.
 [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
 
 ## Authors and acknowledgment
-- The error sound uses Obsydianxs_interface_sfx_pack_WAV_error_style_2_002.mp3 from [Interface SFX Pack 1 (CC0) by ObsydianX](https://obsydianx.itch.io/interface-sfx-pack-1)
+- [Interface SFX Pack 1 (CC0) by ObsydianX](https://obsydianx.itch.io/interface-sfx-pack-1) for the failed ping sound
