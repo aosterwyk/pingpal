@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld('pingpal', {
   stopPings: () => {
     ipcRenderer.invoke('stopPings')
   },
+  writeToLog: (data) => {
+    ipcRenderer.invoke('writeToLog', data);
+  },
   externalPage: (page) => {
     if(page == 'github') {
       shell.openExternal('https://github.com/aosterwyk/pingpal')

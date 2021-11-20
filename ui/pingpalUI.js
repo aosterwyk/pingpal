@@ -43,6 +43,11 @@ function updateStatus(msgType, msg) {
     let statusBox = document.getElementById('statusBox')
     statusBox.innerHTML += `<span class="${msgColor}">${msg}</span><br>`;
     statusBox.scrollTop = statusBox.scrollHeight;
+    
+    let logToFileSetting = document.getElementById('logToFileCheck'); 
+    if(logToFileSetting.checked) {
+        window.pingpal.writeToLog(msg);
+    }
 }
 
 function playSound(soundFile){

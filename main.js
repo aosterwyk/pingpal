@@ -1,6 +1,7 @@
 var ping = require('ping');
 const path = require('path');
 const { sleep } = require('./utils/sleep');
+const { logToFile } = require('./utils/logToFile');
 const { ipcMain, app, BrowserWindow } = require('electron');
 var win;
 var timeBetweenPings = 1;
@@ -68,6 +69,10 @@ ipcMain.handle('startPings', (args, data) => {
     startPings(data);
 });
 
-ipcMain.handle('stopPings', (args, data) => {
+ipcMain.handle('stopPings', () => {
     runPings = false;
+});
+
+ipcMain.handle('writeToLog', (args, data) => {   
+    logToFile('./pingpal.log', `${data}\n`);
 });
