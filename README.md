@@ -8,11 +8,11 @@ Pingpal pings a host and alerts if it goes down. Don't shoot the messenger.
 
 ## Installation
 
-- TO DO - install instructions
+- This program is portable. You can download and run the latest .exe in [Releases](https://github.com/aosterwyk/pingpal/releases/latest).
 
 ## Usage
 
-- TO DO - usage
+- Enter host or IP in text filed and hit start
 
 ## Support
 
@@ -20,3 +20,6 @@ Pingpal pings a host and alerts if it goes down. Don't shoot the messenger.
 
 ## License
 [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
+
+## Authors and acknowledgment
+- The error sound uses Obsydianxs_interface_sfx_pack_WAV_error_style_2_002.mp3 from [Interface SFX Pack 1 (CC0) by ObsydianX](https://obsydianx.itch.io/interface-sfx-pack-1)
