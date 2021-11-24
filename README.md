@@ -4,7 +4,7 @@
 
 <!-- <img src="https://acceptdefaults.com/varibot-twitch-js/varibot.png" align="right" /> -->
 
-Pingpal pings a host and alerts if it goes down. Don't shoot the messenger. 
+Pingpal logs pings to a host and alerts if it goes down. Don't shoot the messenger. 
 
 ## Installation
 
@@ -12,14 +12,17 @@ Pingpal pings a host and alerts if it goes down. Don't shoot the messenger.
 
 ## Usage
 
-- Enter host or IP in text filed and hit start
+- Enter host or IP in text filed and click start
 
 ## Support
 
 [Discord server](https://discord.gg/QNppY7T) or DM `VariXx#8317`
 
 ## License
+
 [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
 
 ## Authors and acknowledgment
 - [Interface SFX Pack 1 (CC0) by ObsydianX](https://obsydianx.itch.io/interface-sfx-pack-1) for the failed ping sound
+- [Bootstrap 5](https://getbootstrap.com/) 
+- [FontAwesome](https://fontawesome.com/) for icons
