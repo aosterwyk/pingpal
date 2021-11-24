@@ -62,12 +62,16 @@ async function startPings(pingMe) {
 }
 
 ipcMain.handle('startPings', (args, data) => {
-    runPings = true;
-    startPings(data);
+    if(!runPings) {
+        runPings = true;
+        startPings(data);
+    }
 });
 
 ipcMain.handle('stopPings', () => {
-    runPings = false;
+    if(runPings) {
+        runPings = false;
+    }
 });
 
 ipcMain.handle('writeToLog', (args, data) => {   
