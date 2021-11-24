@@ -11,10 +11,10 @@ const pingChart = new Chart(ctx, {
             // data: [12, 19, 3, 5, 2, 3],
             data: [0],
             backgroundColor: [
-                'rgba(0, 255, 255, 1)'
+                'rgba(0, 0, 128, 1)'
             ],
             borderColor: [
-                'rgba(0, 255, 255, 1)'
+                'rgba(0, 0, 128, 1)'
             ],
             borderWidth: 1
         }]
