@@ -1,15 +1,18 @@
 var pingCount = 0;
+var highestPing = 0;
 
 const ctx = document.getElementById('pingChart');
 // Chart.defaults.plugins.legend
 const pingChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: [''],
+        // labels: [''],
+        labels: [],
         datasets: [{
             label: 'ms',
             // data: [12, 19, 3, 5, 2, 3],
-            data: [0],
+            // data: [0],
+            data: [],
             backgroundColor: [
                 'rgba(0, 0, 128, 1)'
             ],
@@ -67,6 +70,13 @@ function addPings(alive, labelString, newPingValue) {
         let pingFails = document.getElementById('pingFailures');
         pingFails.innerText = Number(pingFails.innerText) + 1;
     }    
+    else { 
+        document.getElementById('lastResponse').innerText = `${newPingValue}ms`;
+        if(newPingValue > highestPing) { 
+            document.getElementById('highestPing').innerText = `${newPingValue}ms`;
+            highestPing = newPingValue;
+        }
+    }
     // get timestamp and add it to label
     console.log(labelString);
     addData(pingChart, labelString, newPingValue);
