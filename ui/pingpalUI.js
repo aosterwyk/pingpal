@@ -31,7 +31,8 @@ function updateStatus(msgType, msg) {
         msgColor = `text-muted`;
     }
     let statusBox = document.getElementById('statusBox')
-    statusBox.innerHTML += `<span class="${msgColor}">${msg}</span><br>`;
+    // statusBox.innerHTML += `<span class="${msgColor}">${msg}</span><br>`;
+    statusBox.innerHTML += `<option class="${msgColor}">${msg}</option>`;
     statusBox.scrollTop = statusBox.scrollHeight;
     
     let logToFileSetting = document.getElementById('logToFileCheck'); 
