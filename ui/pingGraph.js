@@ -26,6 +26,9 @@ const pingChart = new Chart(ctx, {
             }
         },
         scales: {
+            x: {
+                display: false
+            },
             y: {
                 beginAtZero: true
             }
@@ -49,7 +52,7 @@ function removeData(chart) {
     chart.update();
 }
 
-function addPings(alive, newPingValue) {
+function addPings(alive, labelString, newPingValue) {
     // let newPingValue = Math.floor((Math.random() * 100) + 1);
     pingCount += 1;
     if(pingCount > 50) { // remove old data older than 50
@@ -65,5 +68,6 @@ function addPings(alive, newPingValue) {
         pingFails.innerText = Number(pingFails.innerText) + 1;
     }    
     // get timestamp and add it to label
-    addData(pingChart, '', newPingValue);
+    console.log(labelString);
+    addData(pingChart, labelString, newPingValue);
 }

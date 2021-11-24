@@ -47,7 +47,7 @@ async function startPings(pingMe) {
             const timestamp = new Date();
             let statusString = `${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()} ${res.numeric_host} ${res.time}ms`;
             statusMsg('info', statusString);
-            win.webContents.executeJavaScript(`addPings(true,${res.time})`);
+            win.webContents.executeJavaScript(`addPings(true,"${statusString}",${res.time})`);
         }
         else {
             const timestamp = new Date();
