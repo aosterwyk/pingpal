@@ -1,5 +1,6 @@
 var ping = require('ping');
 const path = require('path');
+const { exec } = require('child_process');
 const { sleep } = require('./utils/sleep');
 const { logToFile } = require('./utils/logToFile');
 const { ipcMain, app, BrowserWindow } = require('electron');
@@ -76,6 +77,10 @@ ipcMain.handle('stopPings', () => {
 
 ipcMain.handle('writeToLog', (args, data) => {   
     logToFile(`${logFilepath}\\pingpal-${data.host}.log`, `${data.msg}\n`);
+});
+
+ipcMain.handle('openLog', (args, data) => {
+    exec(`start ${logFilepath}\\pingpal-${data}.log`);
 });
 
 app.on('ready', () => {

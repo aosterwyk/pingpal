@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('pingpal', {
   writeToLog: (data) => {
     ipcRenderer.invoke('writeToLog', data);
   },
+  openLog: (data) => {
+    ipcRenderer.invoke('openLog', data);
+  },
   externalPage: (page) => {
     if(page == 'github') {
       shell.openExternal('https://github.com/aosterwyk/pingpal')

@@ -62,3 +62,10 @@ function pingFailed() {
 function externalPage(page) {
     window.pingpal.externalPage(page);
 }
+
+function openLog() {
+    let pingThis = document.getElementById('pingMe').value;
+    if(pingThis.length > 1) {    
+        window.pingpal.openLog(pingThis);
+    }
+}
