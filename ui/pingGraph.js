@@ -1,6 +1,7 @@
 var pingCount = 0;
 
 const ctx = document.getElementById('pingChart');
+// Chart.defaults.plugins.legend
 const pingChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -19,6 +20,11 @@ const pingChart = new Chart(ctx, {
         }]
     },
     options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         scales: {
             y: {
                 beginAtZero: true
