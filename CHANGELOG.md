@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 <!-- _No unreleased changes_ -->
 
-## [0.1.0] - YYYY-MM-DDD
+## [0.1.1] - 2022-04-07
+### Security
+- Updated packages for CVE-2021-44906
+
+## [0.1.0] - 2022-11-24
 ### Initial Release
 
+[0.1.1]: https://github.com/aosterwyk/Pingpal/tree/v0.1.1
 [0.1.0]: https://github.com/aosterwyk/Pingpal/tree/v0.1.0
 [Unreleased]: https://github.com/aosterwyk/Pingpal/compare/master...dev
