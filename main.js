@@ -1,96 +1,101 @@
-var ping = require('ping');
+const ping = require('ping');
 const path = require('path');
-const { exec } = require('child_process');
 const { sleep } = require('./utils/sleep');
 const { logToFile } = require('./utils/logToFile');
-const { ipcMain, app, BrowserWindow } = require('electron');
+const { ipcMain, app, BrowserWindow, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
-var win;
-var timeBetweenPings = 1;
-var runPings = false;
 
-const logFilepath = `${app.getPath('desktop')}`;
+let win;
+const timeBetweenPings = 1;
+let runPings = false;
+
+const logFilepath = app.getPath('desktop');
 
 const createWindow = () => {
     win = new BrowserWindow({
         width: 1000,
         height: 800,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
         }
-    })
+    });
     win.loadFile('./ui/index.html');
     win.setMenu(null);
-    // win.webContents.openDevTools();
-}
+};
 
 app.whenReady().then(() => {
-  createWindow()
+    createWindow();
+    autoUpdater.checkForUpdatesAndNotify();
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+    if (process.platform !== 'darwin') app.quit();
+});
 
 function statusMsg(msgType, msg) {
-    win.webContents.executeJavaScript(`updateStatus('${msgType}', '${msg}')`);
+    win.webContents.send('statusUpdate', { msgType, msg });
     console.log(msg);
 }
 
 async function startPings(pingMe) {
     do {
-        let res = await ping.promise.probe(pingMe);      
-        if(res.alive) {
-            const timestamp = new Date();
-            let statusString = `${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()} ${res.numeric_host} ${res.time}ms`;
+        const res = await ping.promise.probe(pingMe);
+        const timestamp = new Date();
+        const label = `${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()}`;
+        if (res.alive) {
+            const statusString = `${label} ${res.numeric_host} ${res.time}ms`;
             statusMsg('info', statusString);
-            win.webContents.executeJavaScript(`addPings(true,"${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()}",${res.time})`);
-        }
-        else {
-            const timestamp = new Date();
-            let failOutput = res.output.replace(/(\r\n|\n|\r)/gm, "");
-            console.log(failOutput);
-            let statusString = `${timestamp.toLocaleDateString()} ${timestamp.toLocaleTimeString()} ping to ${res.inputHost} failed (${failOutput})`;
+            win.webContents.send('pingResult', { alive: true, label, time: res.time });
+        } else {
+            const failOutput = res.output.replace(/(\r\n|\n|\r)/gm, '');
+            const statusString = `${label} ping to ${res.inputHost} failed (${failOutput})`;
             statusMsg('error', statusString);
-            win.webContents.executeJavaScript(`pingFailed()`);
-        }       
+            win.webContents.send('pingResult', { alive: false, label, time: 0 });
+        }
         await sleep(timeBetweenPings);
-    }while(runPings);
+    } while (runPings);
 }
 
-ipcMain.handle('startPings', (args, data) => {
-    if(!runPings) {
+ipcMain.handle('startPings', (_event, data) => {
+    if (!runPings) {
         runPings = true;
         startPings(data);
     }
 });
 
 ipcMain.handle('stopPings', () => {
-    if(runPings) {
+    if (runPings) {
         runPings = false;
     }
 });
 
-ipcMain.handle('writeToLog', (args, data) => {   
-    logToFile(`${logFilepath}\\pingpal-${data.host}.log`, `${data.msg}\n`);
+ipcMain.handle('writeToLog', (_event, data) => {
+    logToFile(path.join(logFilepath, `pingpal-${data.host}.log`), `${data.msg}\n`);
 });
 
-ipcMain.handle('openLog', (args, data) => {
-    exec(`start ${logFilepath}\\pingpal-${data}.log`);
+ipcMain.handle('openLog', (_event, data) => {
+    shell.openPath(path.join(logFilepath, `pingpal-${data}.log`));
 });
 
-app.on('ready', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+ipcMain.handle('openExternal', (_event, url) => {
+    const allowedUrls = ['https://github.com/aosterwyk/pingpal'];
+    if (allowedUrls.includes(url)) {
+        shell.openExternal(url);
+    }
 });
+
+ipcMain.handle('getVersion', () => app.getVersion());
 
 autoUpdater.on('update-available', () => {
-    statusMsg('noLog', `Update available. Starting download.`);
+    statusMsg('noLog', 'Update available. Starting download.');
 });
 
 autoUpdater.on('update-downloaded', () => {
-    statusMsg('noLog', `Update downloaded. Update will be installed next time pingpal is closed.`);
+    statusMsg('noLog', 'Update downloaded. Update will be installed next time pingpal is closed.');
 });

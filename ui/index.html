@@ -1,31 +1,27 @@
 <!doctype html>
+<!-- <html lang="en" data-bs-theme="dark"> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:">
     <title>Pingpal</title>
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="../node_modules/@fortawesome/fontawesome-free/js/brands.js"></script>
     <script defer src="../node_modules/@fortawesome/fontawesome-free/js/solid.js"></script>
-    <script defer src="../node_modules/@fortawesome/fontawesome-free/js/fontawesome.js"></script>    
+    <script defer src="../node_modules/@fortawesome/fontawesome-free/js/fontawesome.js"></script>
 </head>
 <body>
-  <!-- <div class="col-lg-8 mx-auto p-1"> -->
   <div class="w-75 mx-auto p-2">
     <main>
-      <!-- Kifflom!
-      <button class="btn-sm btn-info" onclick="addPings()">Add ping</button> -->
-
       <div class="input-group">
         <input type="text" class="form-control" placeholder="IP or hostname" id="pingMe">
         <div class="input-group-append">
-          <button class="btn btn-success" type="button" onclick="startPings()" id="startButton"><i class="fas fa-play fa-xs"></i> Start</button>
-          <button class="btn btn-danger" type="button" onclick="stopPings()" id="stopButton"><i class="fas fa-pause fa-xs"></i> Pause</button>
+          <button class="btn btn-success" type="button" id="startButton"><i class="fas fa-play fa-xs"></i> Start</button>
+          <button class="btn btn-danger" type="button" id="stopButton"><i class="fas fa-pause fa-xs"></i> Pause</button>
         </div>
-      </div>      
-      <!-- <canvas class="my-4 w-100" id="pingChart" width="900" height="380"></canvas> -->
+      </div>
       <canvas class="my-2 w-100" id="pingChart" height="300"></canvas>
       <div class="row">
-        <!-- <div class="col-xl-3 col-sm-6 col-12 mb-4"> -->
         <div class="w-25 mb-2">
           <div class="card">
             <div class="card-body">
@@ -41,13 +37,12 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-xl-3 col-sm-6 col-12 mb-4"> -->
         <div class="w-25 mb-2">
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between px-md-1">
                 <div class="align-self-center">
-                  <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                  <i class="fas fa-triangle-exclamation text-danger fa-3x"></i>
                 </div>
                 <div class="text-end">
                   <h4 id="pingFailures">0</h4>
@@ -87,7 +82,7 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
       <div class="row">
         <div class="col-sm">
           <div class="form-check">
@@ -96,7 +91,7 @@
               Log to file
             </label>
           </div>
-        </div>          
+        </div>
         <div class="col-sm">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="soundOnFail" checked>
@@ -109,31 +104,21 @@
       <div class="row">
         <div class="col-sm">
           <div class="input-group mb-2">
-            <input type="text" class="form-control" placeholder="This doesn't work yet. Check your desktop." id="logFilepath" disabled>
+            <input type="text" class="form-control" placeholder="Log saved to desktop" id="logFilepath" disabled>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary">Browse</button><button class="btn btn-outline-secondary" onclick="openLog()">Open Log</button>
+              <button class="btn btn-outline-secondary" id="openLogBtn">Open Log</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="row">
-        <div class="col-sm mx-auto mb-2">
-          <button class="btn btn-outline-secondary mr-2">Open Log</button><button class="btn btn-outline-secondary mx-2">Copy Log Path</button>
-        </div>
-      </div> -->
-      <select class="form-select" multiple id="statusBox" style="height:125px; overflow:auto;">
-        <!-- <option value="1">One</option> -->
-      </select>      
-      <!-- <div class="card"> 
-        <div class="card-body" style="height:125px; overflow:auto;" id="statusBox"></div>
-      </div> -->
+      <select class="form-select" multiple id="statusBox" style="height:125px; overflow:auto;"></select>
     </main>
     <footer class="pt-1 text-muted">
       <small>Pingpal <span id="versionNumber"></span></small><br>
-      <a href="#"><i class="fab fa-github text-muted" onclick="externalPage('github')"></i></a>
+      <a href="#" id="githubLink"><i class="fab fa-github text-muted"></i></a>
     </footer>
   </div>
-  <script src="../node_modules/chart.js/dist/chart.min.js"></script>  
+  <script src="../node_modules/chart.js/dist/chart.umd.min.js"></script>
   <script src="./pingGraph.js"></script>
   <script src="./pingpalUI.js"></script>
 </body>

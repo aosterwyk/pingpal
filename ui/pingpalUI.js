@@ -1,62 +1,45 @@
 function startPings() {
-    let pingMe = document.getElementById('pingMe').value;
-    window.pingpal.startPings(pingMe);    
+    const pingMe = document.getElementById('pingMe').value;
+    window.pingpal.startPings(pingMe);
+    startButton(true);
 }
 
 function stopPings() {
     window.pingpal.stopPings();
+    startButton(false);
 }
 
 function startButton(status) {
-    let startButton = document.getElementById('startButton');
-    newText = "Start";
-    if(status) {
-        newText = "Running";
-    }
-    else {
-        newText = "Start";
-    }
-    startButton.innerText = newText;
+    const btn = document.getElementById('startButton');
+    btn.innerText = status ? 'Running' : 'Start';
 }
 
 function updateStatus(msgType, msg) {
-    let msgColor = `text-white-75`;
-    if(msgType == 'error') {        
-        msgColor = `text-danger`;
+    let msgColor = 'text-muted';
+    if (msgType === 'error') {
+        msgColor = 'text-danger';
     }
-    else if(msgType == 'info') {
-        msgColor = `text-muted`;
-    }    
-    else {
-        msgColor = `text-muted`;
+    const statusBox = document.getElementById('statusBox');
+    const option = document.createElement('option');
+    option.className = msgColor;
+    option.textContent = msg;
+    statusBox.appendChild(option);
+    // cap at 500 entries to avoid unbounded memory growth
+    while (statusBox.options.length > 500) {
+        statusBox.remove(0);
     }
-    let statusBox = document.getElementById('statusBox')
-    // statusBox.innerHTML += `<span class="${msgColor}">${msg}</span><br>`;
-    statusBox.innerHTML += `<option class="${msgColor}">${msg}</option>`;
     statusBox.scrollTop = statusBox.scrollHeight;
-    
-    let logToFileSetting = document.getElementById('logToFileCheck'); 
-    if(logToFileSetting.checked && msgType != 'noLog') {
-        let pingThis = document.getElementById('pingMe').value;        
-        let logData = {
-            host: pingThis,
-            msg: msg
-        };
-        window.pingpal.writeToLog(logData);
+
+    const logToFileSetting = document.getElementById('logToFileCheck');
+    if (logToFileSetting.checked && msgType !== 'noLog') {
+        const pingThis = document.getElementById('pingMe').value;
+        window.pingpal.writeToLog({ host: pingThis, msg });
     }
 }
 
-function playSound(soundFile){
-    let sound = new Audio(soundFile);
+function playSound(soundFile) {
+    const sound = new Audio(soundFile);
     sound.play();
-}
-
-function pingFailed() {
-    let failSoundEnabled = document.getElementById('soundOnFail');
-    addPings(false,0);
-    if(failSoundEnabled.checked) {
-        playSound("./Obsydianxs_interface_sfx_pack_WAV_error_style_2_002.mp3");
-    }
 }
 
 function externalPage(page) {
@@ -64,8 +47,29 @@ function externalPage(page) {
 }
 
 function openLog() {
-    let pingThis = document.getElementById('pingMe').value;
-    if(pingThis.length > 1) {    
+    const pingThis = document.getElementById('pingMe').value;
+    if (pingThis.length > 1) {
         window.pingpal.openLog(pingThis);
     }
 }
+
+// Wire up button event listeners
+document.getElementById('startButton').addEventListener('click', startPings);
+document.getElementById('stopButton').addEventListener('click', stopPings);
+document.getElementById('openLogBtn').addEventListener('click', openLog);
+document.getElementById('githubLink').addEventListener('click', () => externalPage('github'));
+
+// Register main-process push events
+window.pingpal.onStatusUpdate(({ msgType, msg }) => {
+    updateStatus(msgType, msg);
+});
+
+window.pingpal.onPingResult(({ alive, label, time }) => {
+    addPings(alive, label, time);
+    if (!alive) {
+        const failSoundEnabled = document.getElementById('soundOnFail');
+        if (failSoundEnabled.checked) {
+            playSound('./Obsydianxs_interface_sfx_pack_WAV_error_style_2_002.mp3');
+        }
+    }
+});

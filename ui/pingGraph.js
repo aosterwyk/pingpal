@@ -1,24 +1,20 @@
-var pingCount = 0;
-var highestPing = 0;
+let pingCount = 0;
+let highestPing = 0;
+
+const COLOR_NORMAL = 'rgba(0, 0, 128, 1)';
+const COLOR_FAIL   = 'rgba(220, 53, 69, 1)';
 
 const ctx = document.getElementById('pingChart');
-// Chart.defaults.plugins.legend
 const pingChart = new Chart(ctx, {
     type: 'line',
     data: {
-        // labels: [''],
         labels: [],
         datasets: [{
             label: 'ms',
-            // data: [12, 19, 3, 5, 2, 3],
-            // data: [0],
             data: [],
-            backgroundColor: [
-                'rgba(0, 0, 128, 1)'
-            ],
-            borderColor: [
-                'rgba(0, 0, 128, 1)'
-            ],
+            pointBackgroundColor: [],
+            pointBorderColor: [],
+            borderColor: COLOR_NORMAL,
             borderWidth: 1
         }]
     },
@@ -39,45 +35,35 @@ const pingChart = new Chart(ctx, {
     }
 });
 
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();
-}
-
-function removeData(chart) {
-    chart.data.labels.pop();
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-    });
-    chart.update();
-}
-
 function addPings(alive, labelString, newPingValue) {
-    // let newPingValue = Math.floor((Math.random() * 100) + 1);
     pingCount += 1;
-    if(pingCount > 50) { // remove old data older than 50
+
+    const dataset = pingChart.data.datasets[0];
+
+    if (pingCount > 50) {
         pingChart.data.labels.shift();
-        pingChart.data.datasets.forEach((dataset) => {
-            dataset.data.shift();
-        });
-        pingChart.update();
+        dataset.data.shift();
+        dataset.pointBackgroundColor.shift();
+        dataset.pointBorderColor.shift();
     }
+
+    const color = alive ? COLOR_NORMAL : COLOR_FAIL;
+    pingChart.data.labels.push(labelString);
+    dataset.data.push(newPingValue);
+    dataset.pointBackgroundColor.push(color);
+    dataset.pointBorderColor.push(color);
+    pingChart.update();
+
     document.getElementById('pingCount').innerText = pingCount;
-    if(!alive) {
-        let pingFails = document.getElementById('pingFailures');
+
+    if (!alive) {
+        const pingFails = document.getElementById('pingFailures');
         pingFails.innerText = Number(pingFails.innerText) + 1;
-    }    
-    else { 
+    } else {
         document.getElementById('lastResponse').innerText = `${newPingValue}ms`;
-        if(newPingValue > highestPing) { 
+        if (newPingValue > highestPing) {
             document.getElementById('highestPing').innerText = `${newPingValue}ms`;
             highestPing = newPingValue;
         }
     }
-    // get timestamp and add it to label
-    console.log(labelString);
-    addData(pingChart, labelString, newPingValue);
 }
